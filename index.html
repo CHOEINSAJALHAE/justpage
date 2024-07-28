@@ -111,6 +111,10 @@
         <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/TeslaPlaid%20animation.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    <audio id="backgroundMusic" loop>
+        <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/Shooting%20Stars%20(mp3cut.net).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <script>
         const translations = [
             "안녕하세요",
@@ -176,7 +180,15 @@
                 document.getElementById('video').style.display = 'block';
                 document.getElementById('text-container').style.display = 'block';
                 startTextAnimation();
+                playBackgroundMusic();
             }, 3000);
+        }
+
+        function playBackgroundMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            audio.play().catch(error => {
+                console.log("Audio playback failed: ", error);
+            });
         }
     </script>
 </body>
