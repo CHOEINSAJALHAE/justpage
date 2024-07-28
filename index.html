@@ -39,6 +39,9 @@
             position: absolute;
             transition: transform 1s ease-out, opacity 1s ease-out;
         }
+        .initial-text {
+            font-size: 4.68rem; /* 글씨 크기를 30% 증가 */
+        }
     </style>
 </head>
 <body>
@@ -47,7 +50,8 @@
         Your browser does not support the video tag.
     </video>
     <div class="text-container">
-        <div id="textTemplate" class="text">안녕하세요</div>
+        <div id="textTemplate" class="text">Sample Text</div>
+        <div id="initialText" class="text initial-text">반갑습니다</div>
     </div>
     <script>
         const translations = [
@@ -103,7 +107,14 @@
         }
 
         window.onload = () => {
-            startTextAnimation();
+            const initialTextElement = document.getElementById('initialText');
+            animateText(initialTextElement, directions[currentDirection]);
+
+            currentDirection = (currentDirection + 1) % directions.length;
+
+            setTimeout(() => {
+                startTextAnimation();
+            }, 700); // 첫 텍스트 애니메이션 후 시작
         };
     </script>
 </body>
