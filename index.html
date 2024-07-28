@@ -75,15 +75,18 @@
             textElement.removeAttribute('id'); // ID 중복 제거
             textElement.textContent = text;
             textElement.style.opacity = '1';
+            textElement.style.transform = 'translate(0, 0)';
 
-            document.body.appendChild(textElement);
+            document.querySelector('.text-container').appendChild(textElement);
             return textElement;
         }
 
         function animateText(textElement, direction) {
             const { x, y } = direction;
-            textElement.style.transform = `translate(${x}px, ${y}px)`;
-            textElement.style.opacity = '0';
+            setTimeout(() => {
+                textElement.style.transform = `translate(${x}px, ${y}px)`;
+                textElement.style.opacity = '0';
+            }, 0); // 애니메이션 시작
             setTimeout(() => {
                 textElement.remove();
             }, 1000); // 텍스트가 사라진 후 제거
