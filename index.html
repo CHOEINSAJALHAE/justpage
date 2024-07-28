@@ -69,11 +69,11 @@
         let currentTranslation = 0;
         let currentDirection = 0;
 
-        function createTextElement() {
+        function createTextElement(text) {
             const textTemplate = document.getElementById('textTemplate');
             const textElement = textTemplate.cloneNode(true);
             textElement.removeAttribute('id'); // ID 중복 제거
-            textElement.textContent = translations[currentTranslation];
+            textElement.textContent = text;
             textElement.style.opacity = '1';
 
             document.body.appendChild(textElement);
@@ -82,18 +82,16 @@
 
         function animateText(textElement, direction) {
             const { x, y } = direction;
+            textElement.style.transform = `translate(${x}px, ${y}px)`;
+            textElement.style.opacity = '0';
             setTimeout(() => {
-                textElement.style.transform = `translate(${x}px, ${y}px)`;
-                textElement.style.opacity = '0';
-                setTimeout(() => {
-                    textElement.remove();
-                }, 1000); // 텍스트가 사라진 후 제거
-            }, 100);
+                textElement.remove();
+            }, 1000); // 텍스트가 사라진 후 제거
         }
 
         function startTextAnimation() {
             setInterval(() => {
-                const textElement = createTextElement();
+                const textElement = createTextElement(translations[currentTranslation]);
                 animateText(textElement, directions[currentDirection]);
 
                 currentTranslation = (currentTranslation + 1) % translations.length;
