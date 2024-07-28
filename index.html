@@ -138,17 +138,15 @@
                 translations.unshift(userInput); // 사용자 입력을 첫 번째 요소로 추가
                 document.getElementById('input-container').style.display = 'none';
                 document.getElementById('text-container').style.display = 'block';
-                createTextElement(userInput).style.fontSize = '3.9rem'; // 30% 더 큰 폰트
+                const firstTextElement = createTextElement(userInput);
+                firstTextElement.style.fontSize = '3.9rem'; // 30% 더 큰 폰트
+                firstTextElement.style.transform = 'translate(-50%, -60%)'; // 중앙에서 약간 위쪽 위치
+                firstTextElement.style.opacity = '1';
                 setTimeout(() => {
-                    startVideoAndAnimation();
+                    document.getElementById('video').style.display = 'block'; // 비디오 표시
+                    startTextAnimation();
                 }, 3000); // 3초 후 시작
             }
-        }
-
-        function startVideoAndAnimation() {
-            document.getElementById('video').style.display = 'block'; // 비디오 표시
-            document.getElementById('text-container').style.display = 'block'; // 텍스트 컨테이너 표시
-            startTextAnimation();
         }
     </script>
 </body>
