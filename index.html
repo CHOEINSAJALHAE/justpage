@@ -47,18 +47,9 @@
         Your browser does not support the video tag.
     </video>
     <div class="text-container">
-        <div id="textTemplate" class="text">Sample Text</div>
+        <div id="textTemplate" class="text">안녕하세요</div>
     </div>
     <script>
-        const translations = [
-            "안녕하세요", // Korean
-            "Hello", // English
-            "你好", // Chinese
-            "Hallo", // German
-            "こんにちは", // Japanese
-            "Bonjour" // French
-        ];
-
         const directions = [
             { x: -200, y: -200 }, // Left Up
             { x: 200, y: -200 },  // Right Up
@@ -66,15 +57,13 @@
             { x: -200, y: 200 }   // Left Down
         ];
 
-        let currentTranslation = 0;
         let currentDirection = 0;
         let textCount = 0;
 
-        function createTextElement(text) {
+        function createTextElement() {
             const textTemplate = document.getElementById('textTemplate');
             const textElement = textTemplate.cloneNode(true);
             textElement.removeAttribute('id');
-            textElement.textContent = text;
             textElement.style.opacity = '1';
             textElement.style.transform = 'translate(0, 0)';
 
@@ -100,10 +89,9 @@
                     textCount = 0;
                     return;
                 }
-                const textElement = createTextElement(translations[currentTranslation]);
+                const textElement = createTextElement();
                 animateText(textElement, directions[currentDirection]);
 
-                currentTranslation = (currentTranslation + 1) % translations.length;
                 currentDirection = (currentDirection + 1) % directions.length;
                 textCount++;
             }, 1000);
@@ -114,10 +102,11 @@
             startTextAnimation();
         });
 
-        videoElement.addEventListener('ended', () => {
-            startTextAnimation();
+        videoElement.addEventListener('timeupdate', () => {
+            if (videoElement.currentTime < 0.5 && textCount === 0) {
+                startTextAnimation();
+            }
         });
-
     </script>
 </body>
 </html>
