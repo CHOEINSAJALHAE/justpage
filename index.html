@@ -2,18 +2,19 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hi!</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: black;
             flex-direction: column;
+            overflow-x: hidden;
         }
         .input-container, .message-container {
             display: flex;
@@ -21,27 +22,32 @@
             justify-content: center;
             flex-direction: column;
             z-index: 2;
-            border: 2px solid #00BFFF; /* 튀는 색상 */
+            border: 2px solid #00BFFF;
             border-radius: 10px;
             padding: 20px;
             background: #000;
+            width: 90%;
+            max-width: 400px;
+            margin: 20px;
+            box-sizing: border-box;
         }
         .input-container textarea, .message-container p {
             padding: 10px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             border: none;
             border-radius: 10px;
             outline: none;
             resize: none;
-            width: 400px; /* 너비 */
-            height: 100px; /* 높이 */
+            width: 100%;
+            height: 100px;
             background: #000;
             color: #fff;
+            box-sizing: border-box;
         }
         .input-container button, .message-container button {
             margin-top: 10px;
             padding: 10px 20px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             background-color: #00BFFF;
             color: white;
             border: none;
@@ -49,36 +55,44 @@
             cursor: pointer;
         }
         video {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             transform: translate(-50%, -50%);
             z-index: -1;
-            display: none; /* 비디오 숨김 */
+            display: none;
         }
         .text-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             z-index: 1;
-            display: none; /* 텍스트 컨테이너 숨김 */
+            display: none;
+            overflow: hidden;
         }
         .text {
-            font-size: 3rem;
+            font-size: 2rem;
             color: white;
             opacity: 0;
             position: absolute;
             transition: transform 1s ease-out, opacity 1s ease-out;
         }
+        @media (max-width: 600px) {
+            .text {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="input-container" id="input-container">
-        <textarea id="userInput" placeholder="안녕하세요 인친님! 최인사잘해에게 진심을 담아 응원 한마디 부탁드려요!"></textarea>
+        <textarea id="userInput" placeholder="안녕하세요 인친님! 최인사잘해에게 진심을 담아 응원 한마디 부탁드려요!"></textarea>
         <button onclick="handleSubmit()">제출</button>
     </div>
     <div class="message-container" id="message-container" style="display:none;">
@@ -90,25 +104,25 @@
     <div class="text-container" id="text-container">
         <div id="textTemplate" class="text"></div>
     </div>
-    <video id="video" autoplay muted loop>
+    <video id="video" autoplay muted loop playsinline>
         <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/TeslaPlaid%20animation.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <script>
         const translations = [
-            "안녕하세요",      // Korean
-            "Hello",          // English
-            "你好",            // Chinese
-            "Hallo",          // German
-            "こんにちは",       // Japanese
-            "Bonjour"         // French
+            "안녕하세요",
+            "Hello",
+            "你好",
+            "Hallo",
+            "こんにちは",
+            "Bonjour"
         ];
 
         const directions = [
-            { x: -200, y: -200 }, // Left Up
-            { x: 200, y: -200 },  // Right Up
-            { x: 200, y: 200 },   // Right Down
-            { x: -200, y: 200 }   // Left Down
+            { x: -100, y: -100 },
+            { x: 100, y: -100 },
+            { x: 100, y: 100 },
+            { x: -100, y: 100 }
         ];
 
         let currentTranslation = 0;
@@ -145,7 +159,7 @@
 
                 currentTranslation = (currentTranslation + 1) % translations.length;
                 currentDirection = (currentDirection + 1) % directions.length;
-            }, 700); // 0.7초 간격으로 생성
+            }, 700);
         }
 
         function handleSubmit() {
@@ -156,10 +170,10 @@
         function startVideo() {
             document.getElementById('message-container').style.display = 'none';
             setTimeout(() => {
-                document.getElementById('video').style.display = 'block'; // 비디오 표시
-                document.getElementById('text-container').style.display = 'block'; // 텍스트 컨테이너 표시
+                document.getElementById('video').style.display = 'block';
+                document.getElementById('text-container').style.display = 'block';
                 startTextAnimation();
-            }, 3000); // 3초 후 시작
+            }, 3000);
         }
     </script>
 </body>
