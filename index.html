@@ -81,6 +81,9 @@
             color: white;
             opacity: 0;
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             transition: transform 1s ease-out, opacity 1s ease-out;
         }
         @media (max-width: 600px) {
@@ -135,7 +138,7 @@
             textElement.removeAttribute('id');
             textElement.textContent = text;
             textElement.style.opacity = '1';
-            textElement.style.transform = 'translate(0, 0)';
+            textElement.style.transform = 'translate(-50%, -50%)';
 
             document.getElementById('text-container').appendChild(textElement);
             return textElement;
@@ -144,7 +147,7 @@
         function animateText(textElement, direction) {
             const { x, y } = direction;
             requestAnimationFrame(() => {
-                textElement.style.transform = `translate(${x}px, ${y}px)`;
+                textElement.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
                 textElement.style.opacity = '0';
             });
             setTimeout(() => {
