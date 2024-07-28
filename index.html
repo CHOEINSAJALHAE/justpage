@@ -15,23 +15,31 @@
             background-color: black;
             flex-direction: column;
         }
-        .input-container {
+        .input-container, .message-container {
             display: flex;
             align-items: center;
+            justify-content: center;
+            flex-direction: column;
             z-index: 2;
-        }
-        textarea {
-            padding: 10px;
-            font-size: 1.2rem;
             border: 2px solid #00BFFF; /* 튀는 색상 */
             border-radius: 10px;
+            padding: 20px;
+            background: #000;
+        }
+        .input-container textarea, .message-container p {
+            padding: 10px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
             outline: none;
-            margin-right: 10px;
             resize: none;
             width: 400px; /* 너비 */
             height: 100px; /* 높이 */
+            background: #000;
+            color: #fff;
         }
-        button {
+        .input-container button, .message-container button {
+            margin-top: 10px;
             padding: 10px 20px;
             font-size: 1.2rem;
             background-color: #00BFFF;
@@ -72,6 +80,12 @@
     <div class="input-container" id="input-container">
         <textarea id="userInput" placeholder="안녕하세요 인친님! 최인사잘해에게 진심을 담아 응원 한마디 부탁드려요!"></textarea>
         <button onclick="handleSubmit()">제출</button>
+    </div>
+    <div class="message-container" id="message-container" style="display:none;">
+        <p>To my dear INCHIN.<br>
+        사실 입력하신 응원 메세지는 저장되지도 않고, 제가 볼 수도 없습니다. 그냥 한번 적게 해본거에요.<br>
+        대신 그 응원 메세지를 인스타 DM으로 보내주세요~~~!! 감사해요!</p>
+        <button onclick="startVideo()">영상시청</button>
     </div>
     <div class="text-container" id="text-container">
         <div id="textTemplate" class="text"></div>
@@ -136,6 +150,11 @@
 
         function handleSubmit() {
             document.getElementById('input-container').style.display = 'none';
+            document.getElementById('message-container').style.display = 'flex';
+        }
+
+        function startVideo() {
+            document.getElementById('message-container').style.display = 'none';
             setTimeout(() => {
                 document.getElementById('video').style.display = 'block'; // 비디오 표시
                 document.getElementById('text-container').style.display = 'block'; // 텍스트 컨테이너 표시
