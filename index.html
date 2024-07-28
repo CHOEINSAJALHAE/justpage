@@ -52,7 +52,6 @@
     </video>
     <div class="text-container">
         <div id="textTemplate" class="text">Sample Text</div>
-        <div id="initialText" class="text initial-text">반갑습니다</div>
     </div>
     <script>
         const translations = [
@@ -112,13 +111,13 @@
         }
 
         window.onload = () => {
-            const initialTextElement = document.getElementById('initialText');
-            animateText(initialTextElement, directions[currentDirection]);
-
-            currentDirection = (currentDirection + 1) % directions.length;
-
+            const initialTextElement = createTextElement("반갑습니다", true);
             setTimeout(() => {
-                startTextAnimation();
+                animateText(initialTextElement, directions[currentDirection]);
+
+                currentDirection = (currentDirection + 1) % directions.length;
+
+                setTimeout(startTextAnimation, 1000); // "반갑습니다" 애니메이션 후 텍스트 애니메이션 시작
             }, 700); // 첫 텍스트 애니메이션 후 시작
         };
     </script>
