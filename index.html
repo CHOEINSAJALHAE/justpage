@@ -25,10 +25,18 @@
             transform: translate(-50%, -50%);
             z-index: -1;
         }
-        h1 {
+        .text-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .text {
             font-size: 3rem; /* 글씨 크기를 적당히 조정 */
             color: white; /* 글씨 색상을 흰색으로 설정 */
-            z-index: 1; /* 텍스트가 비디오 위에 표시되도록 설정 */
+            opacity: 0;
+            position: absolute;
         }
     </style>
 </head>
@@ -37,6 +45,48 @@
         <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/TeslaPlaid%20animation.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <h1>안녕하세요</h1>
+    <div class="text-container">
+        <div id="text1" class="text">안녕하세요</div>
+    </div>
+    <script>
+        // 텍스트 애니메이션 함수
+        function animateText() {
+            const textElement = document.getElementById('text1');
+            const numOfCopies = 20;
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < numOfCopies; i++) {
+                const clone = textElement.cloneNode(true);
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 200 + 50;
+
+                clone.style.transform = `rotate(${angle}deg) translate(${distance}px)`;
+                clone.style.opacity = '1';
+                clone.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+                fragment.appendChild(clone);
+            }
+
+            document.body.appendChild(fragment);
+
+            // 원래 텍스트 애니메이션
+            textElement.style.opacity = '1';
+            textElement.style.transition = 'opacity 1s ease-in';
+
+            setTimeout(() => {
+                const clones = document.querySelectorAll('.text-container .text');
+                clones.forEach(clone => {
+                    const angle = Math.random() * 360;
+                    const distance = Math.random() * 200 + 50;
+                    clone.style.transform = `rotate(${angle}deg) translate(${distance}px)`;
+                    clone.style.opacity = '0';
+                });
+            }, 1000);
+        }
+
+        // 페이지 로드 후 애니메이션 시작
+        window.onload = () => {
+            setTimeout(animateText, 1000);
+        };
+    </script>
 </body>
 </html>
