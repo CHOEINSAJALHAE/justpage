@@ -58,7 +58,6 @@
         ];
 
         let currentDirection = 0;
-        let textCount = 0;
 
         function createTextElement() {
             const textTemplate = document.getElementById('textTemplate');
@@ -83,30 +82,17 @@
         }
 
         function startTextAnimation() {
-            const intervalId = setInterval(() => {
-                if (textCount >= 11) {
-                    clearInterval(intervalId);
-                    textCount = 0;
-                    return;
-                }
+            setInterval(() => {
                 const textElement = createTextElement();
                 animateText(textElement, directions[currentDirection]);
 
                 currentDirection = (currentDirection + 1) % directions.length;
-                textCount++;
-            }, 1000);
+            }, 700);
         }
 
-        const videoElement = document.getElementById('bgVideo');
-        videoElement.addEventListener('play', () => {
+        window.onload = () => {
             startTextAnimation();
-        });
-
-        videoElement.addEventListener('timeupdate', () => {
-            if (videoElement.currentTime < 0.5 && textCount === 0) {
-                startTextAnimation();
-            }
-        });
+        };
     </script>
 </body>
 </html>
