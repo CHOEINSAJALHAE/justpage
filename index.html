@@ -133,15 +133,12 @@
         }
 
         function handleSubmit() {
-            const userInput = document.getElementById('userInput').value;
-            if (userInput.trim()) {
-                document.getElementById('input-container').style.display = 'none';
-                setTimeout(() => {
-                    document.getElementById('video').style.display = 'block'; // 비디오 표시
-                    document.getElementById('text-container').style.display = 'block'; // 텍스트 컨테이너 표시
-                    startTextAnimation();
-                }, 3000); // 3초 후 시작
-            }
+            document.getElementById('input-container').style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('video').style.display = 'block'; // 비디오 표시
+                document.getElementById('text-container').style.display = 'block'; // 텍스트 컨테이너 표시
+                startTextAnimation();
+            }, 3000); // 3초 후 시작
         }
     </script>
 </body>
