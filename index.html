@@ -41,6 +41,7 @@
         }
         .initial-text {
             font-size: 4.68rem; /* 글씨 크기를 30% 증가 */
+            opacity: 1;
         }
     </style>
 </head>
@@ -73,13 +74,17 @@
         let currentTranslation = 0;
         let currentDirection = 0;
 
-        function createTextElement(text) {
+        function createTextElement(text, isInitial = false) {
             const textTemplate = document.getElementById('textTemplate');
             const textElement = textTemplate.cloneNode(true);
             textElement.removeAttribute('id');
             textElement.textContent = text;
             textElement.style.opacity = '1';
             textElement.style.transform = 'translate(0, 0)';
+
+            if (isInitial) {
+                textElement.classList.add('initial-text');
+            }
 
             document.querySelector('.text-container').appendChild(textElement);
             return textElement;
