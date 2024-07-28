@@ -26,11 +26,11 @@
             z-index: -1;
         }
         .text-container {
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         .text {
             font-size: 3rem; /* 글씨 크기를 적당히 조정 */
@@ -47,37 +47,58 @@
         Your browser does not support the video tag.
     </video>
     <div class="text-container">
-        <div id="textTemplate" class="text">안녕하세요</div>
+        <div id="textTemplate" class="text"></div>
     </div>
     <script>
+        const translations = [
+            "안녕하세요",      // Korean
+            "Hello",          // English
+            "你好",            // Chinese
+            "Hallo",          // German
+            "こんにちは",       // Japanese
+            "Bonjour"         // French
+        ];
+
+        const directions = [
+            { x: -200, y: -200 }, // Left Up
+            { x: 200, y: -200 },  // Right Up
+            { x: 200, y: 200 },   // Right Down
+            { x: -200, y: 200 }   // Left Down
+        ];
+
+        let currentTranslation = 0;
+        let currentDirection = 0;
+
         function createTextElement() {
             const textTemplate = document.getElementById('textTemplate');
             const textElement = textTemplate.cloneNode(true);
             textElement.removeAttribute('id'); // ID 중복 제거
+            textElement.textContent = translations[currentTranslation];
+            textElement.style.opacity = '1';
 
             document.body.appendChild(textElement);
             return textElement;
         }
 
-        function animateText(textElement) {
-            const angle = Math.random() * 360;
-            const distance = Math.random() * 200 + 50;
-            textElement.style.transform = `rotate(${angle}deg) translate(${distance}px)`;
-            textElement.style.opacity = '1';
-
+        function animateText(textElement, direction) {
+            const { x, y } = direction;
             setTimeout(() => {
+                textElement.style.transform = `translate(${x}px, ${y}px)`;
                 textElement.style.opacity = '0';
                 setTimeout(() => {
                     textElement.remove();
                 }, 1000); // 텍스트가 사라진 후 제거
-            }, 1000);
+            }, 100);
         }
 
         function startTextAnimation() {
             setInterval(() => {
                 const textElement = createTextElement();
-                animateText(textElement);
-            }, 500); // 0.5초마다 새로운 텍스트 생성
+                animateText(textElement, directions[currentDirection]);
+
+                currentTranslation = (currentTranslation + 1) % translations.length;
+                currentDirection = (currentDirection + 1) % directions.length;
+            }, 1000); // 1초마다 새로운 텍스트 생성
         }
 
         window.onload = () => {
