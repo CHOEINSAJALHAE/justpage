@@ -33,8 +33,8 @@
             z-index: 1;
         }
         .text {
-            font-size: 3rem;
-            color: white;
+            font-size: 3.6rem; /* 글씨 크기를 20% 증가 */
+            color: white; /* 글씨 색상을 흰색으로 설정 */
             opacity: 0;
             position: absolute;
             transition: transform 1s ease-out, opacity 1s ease-out;
@@ -42,7 +42,7 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop>
+    <video id="bgVideo" autoplay muted loop>
         <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/TeslaPlaid%20animation.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -50,7 +50,14 @@
         <div id="textTemplate" class="text">Sample Text</div>
     </div>
     <script>
-        const textContent = "안녕하세요";
+        const translations = [
+            "안녕하세요", // Korean
+            "Hello", // English
+            "你好", // Chinese
+            "Hallo", // German
+            "こんにちは", // Japanese
+            "Bonjour" // French
+        ];
 
         const directions = [
             { x: -200, y: -200 }, // Left Up
@@ -59,7 +66,9 @@
             { x: -200, y: 200 }   // Left Down
         ];
 
+        let currentTranslation = 0;
         let currentDirection = 0;
+        let textCount = 0;
 
         function createTextElement(text) {
             const textTemplate = document.getElementById('textTemplate');
@@ -85,17 +94,30 @@
         }
 
         function startTextAnimation() {
-            setInterval(() => {
-                const textElement = createTextElement(textContent);
+            const intervalId = setInterval(() => {
+                if (textCount >= 11) {
+                    clearInterval(intervalId);
+                    textCount = 0;
+                    return;
+                }
+                const textElement = createTextElement(translations[currentTranslation]);
                 animateText(textElement, directions[currentDirection]);
 
+                currentTranslation = (currentTranslation + 1) % translations.length;
                 currentDirection = (currentDirection + 1) % directions.length;
+                textCount++;
             }, 1000);
         }
 
-        window.onload = () => {
-            setTimeout(startTextAnimation, 1000);
-        };
+        const videoElement = document.getElementById('bgVideo');
+        videoElement.addEventListener('play', () => {
+            startTextAnimation();
+        });
+
+        videoElement.addEventListener('ended', () => {
+            startTextAnimation();
+        });
+
     </script>
 </body>
 </html>
