@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벽걸이 에어컨</title>
+    <title>고양이 방귀</title>
     <style>
         body {
             margin: 0;
@@ -20,46 +20,26 @@
             text-align: center;
         }
 
-        #aircon {
-            width: 300px;
-            height: 150px;
-            background-color: #ccc;
-            border-radius: 10px;
-            position: relative;
-            margin-bottom: 20px;
+        #cat {
+            width: 200px;
         }
 
-        .wind {
+        .fart {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 60px;
+            height: 60px;
             background: transparent;
             border-radius: 50%;
-            border: 3px solid lightblue;
-            animation: windFlow 2s infinite ease-in-out;
+            border: 3px solid lightgreen;
             opacity: 0;
             transform: scale(0);
-        }
-
-        .wind:nth-child(1) {
-            left: 40%;
-            top: 90%;
-            animation-delay: 0.5s;
-        }
-
-        .wind:nth-child(2) {
+            bottom: -50px;
             left: 50%;
-            top: 95%;
-            animation-delay: 1s;
+            transform: translateX(-50%);
+            animation: none;
         }
 
-        .wind:nth-child(3) {
-            left: 60%;
-            top: 90%;
-            animation-delay: 1.5s;
-        }
-
-        @keyframes windFlow {
+        @keyframes fartFlow {
             0% {
                 opacity: 0;
                 transform: scale(0);
@@ -92,21 +72,20 @@
 <body>
 
     <div class="container">
-        <div id="aircon"></div>
-        <div class="wind"></div>
-        <div class="wind"></div>
-        <div class="wind"></div>
+        <!-- 고양이 이미지를 GitHub에서 불러옵니다. -->
+        <img id="cat" src="https://github.com/CHOEINSAJALHAE/justpage/blob/main/KakaoTalk_Photo_2024-10-16-21-35-26.jpeg" alt="고양이">
+        <div class="fart" id="fart"></div>
         <button onclick="purifyAir()">공기정화</button>
-        <div id="status">공기정화 중...</div>
+        <div id="status">방귀 발생 중...</div>
     </div>
 
     <script>
         function purifyAir() {
-            const winds = document.querySelectorAll('.wind');
+            const fart = document.getElementById('fart');
             const status = document.getElementById('status');
 
-            // Activate wind animation and show status text
-            winds.forEach(wind => wind.style.opacity = 1);
+            // Activate fart animation and show status text
+            fart.style.animation = 'fartFlow 2s infinite ease-in-out';
             status.style.display = 'block';
         }
     </script>
