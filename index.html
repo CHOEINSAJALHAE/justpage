@@ -29,36 +29,48 @@
             margin-bottom: 20px;
         }
 
-        .airflow {
-            width: 10px;
-            height: 100px;
-            background-color: lightblue;
+        .wind {
             position: absolute;
-            bottom: -110px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
+            width: 100px;
+            height: 100px;
+            background: transparent;
             border-radius: 50%;
-            animation: none;
+            border: 3px solid lightblue;
+            animation: windFlow 2s infinite ease-in-out;
+            opacity: 0;
+            transform: scale(0);
         }
 
-        .airflow.active {
-            opacity: 1;
-            animation: flow 2s infinite linear;
+        .wind:nth-child(1) {
+            left: 40%;
+            top: 90%;
+            animation-delay: 0.5s;
         }
 
-        @keyframes flow {
+        .wind:nth-child(2) {
+            left: 50%;
+            top: 95%;
+            animation-delay: 1s;
+        }
+
+        .wind:nth-child(3) {
+            left: 60%;
+            top: 90%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes windFlow {
             0% {
-                height: 50px;
-                transform: translateX(-50%) rotate(0deg);
+                opacity: 0;
+                transform: scale(0);
             }
             50% {
-                height: 100px;
-                transform: translateX(-50%) rotate(10deg);
+                opacity: 1;
+                transform: scale(1.5);
             }
             100% {
-                height: 50px;
-                transform: translateX(-50%) rotate(-10deg);
+                opacity: 0;
+                transform: scale(2);
             }
         }
 
@@ -81,18 +93,20 @@
 
     <div class="container">
         <div id="aircon"></div>
-        <div class="airflow" id="airflow"></div>
+        <div class="wind"></div>
+        <div class="wind"></div>
+        <div class="wind"></div>
         <button onclick="purifyAir()">공기정화</button>
         <div id="status">공기정화 중...</div>
     </div>
 
     <script>
         function purifyAir() {
-            const airflow = document.getElementById('airflow');
+            const winds = document.querySelectorAll('.wind');
             const status = document.getElementById('status');
 
-            // Toggle airflow animation and status text
-            airflow.classList.add('active');
+            // Activate wind animation and show status text
+            winds.forEach(wind => wind.style.opacity = 1);
             status.style.display = 'block';
         }
     </script>
