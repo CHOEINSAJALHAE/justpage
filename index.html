@@ -2,194 +2,91 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hi!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>벽걸이 에어컨</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black;
-            flex-direction: column;
-            overflow-x: hidden;
+            height: 100vh;
+            background-color: white;
         }
-        .input-container, .message-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 2;
-            border: 2px solid #00BFFF;
+
+        .container {
+            position: relative;
+            text-align: center;
+        }
+
+        #aircon {
+            width: 300px;
+            height: 150px;
+            background-color: #ccc;
             border-radius: 10px;
-            padding: 20px;
-            background: #000;
-            width: 90%;
-            max-width: 400px;
-            margin: 20px;
-            box-sizing: border-box;
+            position: relative;
         }
-        .input-container textarea, .message-container p {
-            padding: 10px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 10px;
-            outline: none;
-            resize: none;
-            width: 100%;
-            height: 100px;
-            background: #000;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        .input-container button, .message-container button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #00BFFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        video {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            display: none;
-        }
-        .text-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1;
-            display: none;
-            overflow: hidden;
-        }
-        .text {
-            font-size: 2rem;
-            color: white;
-            opacity: 0;
+
+        .airflow {
+            width: 100px;
+            height: 10px;
+            background-color: lightblue;
             position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 1s ease-out, opacity 1s ease-out;
+            top: 100%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 1s ease;
         }
-        @media (max-width: 600px) {
-            .text {
-                font-size: 1.5rem;
-            }
+
+        .airflow.incoming {
+            top: -20px;
+            transform: translateX(-50%) translateY(-50px);
+        }
+
+        .airflow.outgoing {
+            top: 100%;
+            transform: translateX(-50%) translateY(50px);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="input-container" id="input-container">
-        <textarea id="userInput" placeholder="안녕하세요 인친님! 최인사잘해에게 진심을 담아 응원 한마디 부탁드려요!"></textarea>
-        <button onclick="handleSubmit()">제출</button>
+
+    <div class="container">
+        <div id="aircon"></div>
+        <div class="airflow incoming" id="air-in"></div>
+        <div class="airflow outgoing" id="air-out"></div>
+        <button onclick="purifyAir()">공기정화</button>
     </div>
-    <div class="message-container" id="message-container" style="display:none;">
-        <p>To my dear INCHIN.<br>
-        사실 입력해주신 응원메세지는 저장되지도 않고, 제가 볼 수도 없습니다. 그냥 한번 적게 해본거에요.<br>
-        대신 그 응원 메세지를 인스타 DM으로 보내주세요~~~!! 감사해요!</p>
-        <button onclick="startVideo()">영상시청</button>
-    </div>
-    <div class="text-container" id="text-container">
-        <div id="textTemplate" class="text"></div>
-    </div>
-    <video id="video" autoplay muted loop playsinline>
-        <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/TeslaPlaid%20animation.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    <audio id="backgroundMusic" loop>
-        <source src="https://github.com/CHOEINSAJALHAE/justpage/raw/main/Shooting%20Stars%20(mp3cut.net).mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+
     <script>
-        const translations = [
-            "안녕하세요",
-            "Hello",
-            "你好",
-            "Hallo",
-            "こんにちは",
-            "Bonjour"
-        ];
-
-        const directions = [
-            { x: -200, y: -200 },
-            { x: 200, y: -200 },
-            { x: 200, y: 200 },
-            { x: -200, y: 200 }
-        ];
-
-        let currentTranslation = 0;
-        let currentDirection = 0;
-        let interval;
-
-        function createTextElement(text) {
-            const textTemplate = document.getElementById('textTemplate');
-            const textElement = textTemplate.cloneNode(true);
-            textElement.removeAttribute('id');
-            textElement.textContent = text;
-            textElement.style.opacity = '1';
-            textElement.style.transform = 'translate(-50%, -50%)';
-
-            document.getElementById('text-container').appendChild(textElement);
-            return textElement;
-        }
-
-        function animateText(textElement, direction) {
-            const { x, y } = direction;
-            requestAnimationFrame(() => {
-                textElement.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-                textElement.style.opacity = '0';
-            });
+        function purifyAir() {
+            const airIn = document.getElementById('air-in');
+            const airOut = document.getElementById('air-out');
+            
+            // Animate airflows
+            airIn.style.opacity = 1;
+            airOut.style.opacity = 1;
+            airIn.style.transform = 'translateX(-50%) translateY(0)';
+            airOut.style.transform = 'translateX(-50%) translateY(0)';
+            
+            // Reset the animation after some time
             setTimeout(() => {
-                textElement.remove();
-            }, 1000);
-        }
-
-        function startTextAnimation() {
-            interval = setInterval(() => {
-                const textElement = createTextElement(translations[currentTranslation]);
-                animateText(textElement, directions[currentDirection]);
-
-                currentTranslation = (currentTranslation + 1) % translations.length;
-                currentDirection = (currentDirection + 1) % directions.length;
-            }, 700);
-        }
-
-        function handleSubmit() {
-            document.getElementById('input-container').style.display = 'none';
-            document.getElementById('message-container').style.display = 'flex';
-        }
-
-        function startVideo() {
-            document.getElementById('message-container').style.display = 'none';
-            setTimeout(() => {
-                document.getElementById('video').style.display = 'block';
-                document.getElementById('text-container').style.display = 'block';
-                startTextAnimation();
-                playBackgroundMusic();
-            }, 3000);
-        }
-
-        function playBackgroundMusic() {
-            const audio = document.getElementById('backgroundMusic');
-            audio.play().catch(error => {
-                console.log("Audio playback failed: ", error);
-            });
+                airIn.style.opacity = 0;
+                airOut.style.opacity = 0;
+                airIn.style.transform = 'translateX(-50%) translateY(-50px)';
+                airOut.style.transform = 'translateX(-50%) translateY(50px)';
+            }, 2000);
         }
     </script>
+
 </body>
 </html>
