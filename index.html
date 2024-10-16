@@ -36,35 +36,50 @@
 
         .fart {
             position: absolute;
-            width: 150px;
-            height: 50px;
-            background: transparent;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(144,238,144,0.6) 30%, rgba(0,0,0,0) 70%);
-            opacity: 0;
-            transform: scale(0);
             bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            animation: none;
+            display: flex;
+            justify-content: space-between;
+            width: 120px;
+            opacity: 0;
+        }
+
+        .fart-line {
+            width: 30px;
+            height: 8px;
+            background-color: lightblue;
+            border-radius: 50px;
+        }
+
+        .fart-line:nth-child(1) {
+            transform: rotate(-30deg);
+        }
+
+        .fart-line:nth-child(2) {
+            transform: rotate(0deg);
+        }
+
+        .fart-line:nth-child(3) {
+            transform: rotate(30deg);
         }
 
         .fart.active {
-            animation: fartFlow 3s infinite ease-in-out;
+            animation: fartFlow 2s infinite ease-in-out;
         }
 
         @keyframes fartFlow {
             0% {
+                transform: translateX(-50%) translateY(0) scale(0.5);
                 opacity: 0;
-                transform: scale(0.5);
             }
             50% {
-                opacity: 0.8;
-                transform: scale(1.5);
+                transform: translateX(-50%) translateY(-10px) scale(1.2);
+                opacity: 1;
             }
             100% {
+                transform: translateX(-50%) translateY(-20px) scale(2);
                 opacity: 0;
-                transform: scale(2);
             }
         }
 
@@ -83,7 +98,12 @@
     <div class="container">
         <!-- 고양이 이미지를 GitHub에서 불러옵니다. -->
         <img id="cat" src="https://github.com/CHOEINSAJALHAE/justpage/blob/bb353352778ddd3dad3e076b7558569ab79dc048/KakaoTalk_Photo_2024-10-16-21-35-26.jpeg" alt="고양이">
-        <div class="fart" id="fart"></div>
+        <!-- 바람 모양의 3개의 줄 -->
+        <div class="fart" id="fart">
+            <div class="fart-line"></div>
+            <div class="fart-line"></div>
+            <div class="fart-line"></div>
+        </div>
         <div id="status">방귀 발생 중...</div>
     </div>
 
