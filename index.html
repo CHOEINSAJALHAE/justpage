@@ -20,14 +20,12 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            position: absolute;
-            top: 20px;
+            margin-bottom: 20px;
         }
 
         .container {
             position: relative;
             text-align: center;
-            margin-top: 50px;
         }
 
         #cat {
@@ -36,58 +34,37 @@
 
         .fart {
             position: absolute;
+            width: 100px;
+            height: 40px;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
             bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            justify-content: space-between;
-            width: 120px;
-            opacity: 0;
         }
 
         .fart-line {
             width: 30px;
-            height: 8px;
+            height: 10px;
             background-color: lightblue;
             border-radius: 50px;
         }
 
-        .fart-line:nth-child(1) {
-            transform: rotate(-30deg);
-        }
-
-        .fart-line:nth-child(2) {
-            transform: rotate(0deg);
-        }
-
-        .fart-line:nth-child(3) {
-            transform: rotate(30deg);
-        }
-
         .fart.active {
-            animation: fartFlow 2s infinite ease-in-out;
+            animation: fartFlow 2s ease-out infinite;
         }
 
         @keyframes fartFlow {
             0% {
-                transform: translateX(-50%) translateY(0) scale(0.5);
-                opacity: 0;
-            }
-            50% {
-                transform: translateX(-50%) translateY(-10px) scale(1.2);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
             100% {
-                transform: translateX(-50%) translateY(-20px) scale(2);
+                transform: translateY(-30px) scale(1.5);
                 opacity: 0;
             }
-        }
-
-        #status {
-            margin-top: 20px;
-            font-size: 18px;
-            color: green;
-            display: none;
         }
     </style>
 </head>
@@ -96,25 +73,20 @@
     <button onclick="purifyAir()">공기정화</button>
 
     <div class="container">
-        <!-- 고양이 이미지를 GitHub에서 불러옵니다. -->
-        <img id="cat" src="https://github.com/CHOEINSAJALHAE/justpage/blob/bb353352778ddd3dad3e076b7558569ab79dc048/KakaoTalk_Photo_2024-10-16-21-35-26.jpeg" alt="고양이">
-        <!-- 바람 모양의 3개의 줄 -->
+        <!-- 고양이 이미지 -->
+        <img id="cat" src="https://github.com/your-username/your-repo-name/raw/main/cat-image.png" alt="고양이">
+        <!-- 바람 모양 -->
         <div class="fart" id="fart">
             <div class="fart-line"></div>
             <div class="fart-line"></div>
             <div class="fart-line"></div>
         </div>
-        <div id="status">방귀 발생 중...</div>
     </div>
 
     <script>
         function purifyAir() {
             const fart = document.getElementById('fart');
-            const status = document.getElementById('status');
-
-            // Activate fart animation and show status text
-            fart.classList.add('active');
-            status.style.display = 'block';
+            fart.classList.add('active');  // 바람 애니메이션 활성화
         }
     </script>
 
